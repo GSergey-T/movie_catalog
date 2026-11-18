@@ -23,4 +23,14 @@ public class MovieResponseDTO {
     String ageRating;
     MovieStatus status;
     LocalDateTime createdAt;
+
+    public MovieResponseDTO(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.durationMinutes = durationMinutes;
+        this.ageRating = ageRating;
+        this.status = status;
+    }
 }

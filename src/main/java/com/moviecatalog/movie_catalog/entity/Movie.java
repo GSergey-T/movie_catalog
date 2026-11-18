@@ -60,4 +60,14 @@ public class Movie {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public Movie(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.durationMinutes = durationMinutes;
+        this.ageRating = ageRating;
+        this.status = status;
+    }
 }
