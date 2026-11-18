@@ -1,0 +1,161 @@
+2026-11-17T12:56:39.976+02:00  INFO 21988 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Starting MovieCatalogApplication using Java 21.0.4 with PID 21988 (C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog\target\classes started by GSergey_V in C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog)
+2026-11-17T12:56:39.983+02:00  INFO 21988 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T12:56:40.713+02:00  INFO 21988 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-17T12:56:40.784+02:00  INFO 21988 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 4 JPA repository interfaces.
+2026-11-17T12:56:41.375+02:00  INFO 21988 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-17T12:56:41.401+02:00  INFO 21988 --- [movie_catalog] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-17T12:56:41.402+02:00  INFO 21988 --- [movie_catalog] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-17T12:56:41.458+02:00  INFO 21988 --- [movie_catalog] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1428 ms
+2026-11-17T12:56:41.622+02:00  INFO 21988 --- [movie_catalog] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-17T12:56:41.710+02:00  INFO 21988 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.13.Final
+2026-11-17T12:56:42.342+02:00  INFO 21988 --- [movie_catalog] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-17T12:56:42.396+02:00  INFO 21988 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-17T12:56:42.661+02:00  INFO 21988 --- [movie_catalog] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@45f1413c
+2026-11-17T12:56:42.664+02:00  INFO 21988 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-17T12:56:42.740+02:00  WARN 21988 --- [movie_catalog] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-17T12:56:42.788+02:00  INFO 21988 --- [movie_catalog] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/movie_catalog]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.7
+	Default catalog/schema: movie_catalog/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-17T12:56:44.324+02:00  INFO 21988 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-17T12:56:44.490+02:00  INFO 21988 --- [movie_catalog] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T12:56:44.590+02:00  INFO 21988 --- [movie_catalog] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-17T12:56:45.864+02:00  WARN 21988 --- [movie_catalog] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-17T12:56:46.284+02:00  INFO 21988 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-17T12:56:46.284+02:00  INFO 21988 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Started MovieCatalogApplication in 7.033 seconds (process running for 7.622)
+2026-11-17T12:57:11.001+02:00  INFO 21988 --- [movie_catalog] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-17T12:57:11.009+02:00  INFO 21988 --- [movie_catalog] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-11-17T12:57:11.011+02:00  INFO 21988 --- [movie_catalog] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T12:57:11.012+02:00  INFO 21988 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-11-17T12:57:11.015+02:00  INFO 21988 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-11-17T12:57:27.888+02:00  INFO 3452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Starting MovieCatalogApplication using Java 21.0.4 with PID 3452 (C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog\target\classes started by GSergey_V in C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog)
+2026-11-17T12:57:27.890+02:00  INFO 3452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T12:57:28.356+02:00  INFO 3452 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-17T12:57:28.405+02:00  INFO 3452 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42 ms. Found 4 JPA repository interfaces.
+2026-11-17T12:57:28.772+02:00  INFO 3452 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-17T12:57:28.786+02:00  INFO 3452 --- [movie_catalog] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-17T12:57:28.786+02:00  INFO 3452 --- [movie_catalog] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-17T12:57:28.837+02:00  INFO 3452 --- [movie_catalog] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 908 ms
+2026-11-17T12:57:28.980+02:00  INFO 3452 --- [movie_catalog] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-17T12:57:29.038+02:00  INFO 3452 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.13.Final
+2026-11-17T12:57:29.388+02:00  INFO 3452 --- [movie_catalog] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-17T12:57:29.416+02:00  INFO 3452 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-17T12:57:29.541+02:00  INFO 3452 --- [movie_catalog] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@60e47aab
+2026-11-17T12:57:29.541+02:00  INFO 3452 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-17T12:57:29.574+02:00  WARN 3452 --- [movie_catalog] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-17T12:57:29.601+02:00  INFO 3452 --- [movie_catalog] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/movie_catalog]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.7
+	Default catalog/schema: movie_catalog/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-17T12:57:30.574+02:00  INFO 3452 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-17T12:57:30.668+02:00  INFO 3452 --- [movie_catalog] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T12:57:30.732+02:00  INFO 3452 --- [movie_catalog] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-17T12:57:31.761+02:00  WARN 3452 --- [movie_catalog] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-17T12:57:32.139+02:00  INFO 3452 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-17T12:57:32.153+02:00  INFO 3452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Started MovieCatalogApplication in 4.726 seconds (process running for 5.111)
+2026-11-17T12:57:39.553+02:00  INFO 3452 --- [movie_catalog] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-17T12:57:39.553+02:00  INFO 3452 --- [movie_catalog] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-17T12:57:39.553+02:00  INFO 3452 --- [movie_catalog] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-11-17T12:57:53.692+02:00  INFO 3452 --- [movie_catalog] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-17T12:57:53.699+02:00  INFO 3452 --- [movie_catalog] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-11-17T12:57:53.702+02:00  INFO 3452 --- [movie_catalog] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T12:57:53.704+02:00  INFO 3452 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-11-17T12:57:53.706+02:00  INFO 3452 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-11-17T13:07:34.792+02:00  INFO 8452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Starting MovieCatalogApplication using Java 21.0.4 with PID 8452 (C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog\target\classes started by GSergey_V in C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog)
+2026-11-17T13:07:34.796+02:00  INFO 8452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T13:07:35.229+02:00  INFO 8452 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-17T13:07:35.271+02:00  INFO 8452 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40 ms. Found 4 JPA repository interfaces.
+2026-11-17T13:07:35.603+02:00  INFO 8452 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-17T13:07:35.603+02:00  INFO 8452 --- [movie_catalog] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-17T13:07:35.603+02:00  INFO 8452 --- [movie_catalog] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-17T13:07:35.656+02:00  INFO 8452 --- [movie_catalog] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 826 ms
+2026-11-17T13:07:35.762+02:00  INFO 8452 --- [movie_catalog] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-17T13:07:35.825+02:00  INFO 8452 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.13.Final
+2026-11-17T13:07:36.150+02:00  INFO 8452 --- [movie_catalog] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-17T13:07:36.179+02:00  INFO 8452 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-17T13:07:36.301+02:00  INFO 8452 --- [movie_catalog] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4e85dcb2
+2026-11-17T13:07:36.301+02:00  INFO 8452 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-17T13:07:36.333+02:00  WARN 8452 --- [movie_catalog] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-17T13:07:36.359+02:00  INFO 8452 --- [movie_catalog] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/movie_catalog]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.7
+	Default catalog/schema: movie_catalog/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-17T13:07:37.254+02:00  INFO 8452 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-17T13:07:37.348+02:00  INFO 8452 --- [movie_catalog] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T13:07:37.427+02:00  INFO 8452 --- [movie_catalog] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-17T13:07:38.418+02:00  WARN 8452 --- [movie_catalog] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-17T13:07:38.751+02:00  INFO 8452 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-17T13:07:38.751+02:00  INFO 8452 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Started MovieCatalogApplication in 4.387 seconds (process running for 4.774)
+2026-11-17T13:07:47.717+02:00  INFO 8452 --- [movie_catalog] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-17T13:07:47.717+02:00  INFO 8452 --- [movie_catalog] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-17T13:07:47.718+02:00  INFO 8452 --- [movie_catalog] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-11-17T13:07:52.766+02:00  INFO 8452 --- [movie_catalog] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-17T13:07:52.775+02:00  INFO 8452 --- [movie_catalog] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-11-17T13:07:52.777+02:00  INFO 8452 --- [movie_catalog] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T13:07:52.779+02:00  INFO 8452 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-11-17T13:07:52.782+02:00  INFO 8452 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-11-17T13:08:32.624+02:00  INFO 332 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Starting MovieCatalogApplication using Java 21.0.4 with PID 332 (C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog\target\classes started by GSergey_V in C:\Users\GSergey_Asus\Desktop\AI Project\movie_catalog)
+2026-11-17T13:08:32.627+02:00  INFO 332 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-11-17T13:08:33.073+02:00  INFO 332 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-17T13:08:33.122+02:00  INFO 332 --- [movie_catalog] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 41 ms. Found 4 JPA repository interfaces.
+2026-11-17T13:08:33.444+02:00  INFO 332 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-17T13:08:33.453+02:00  INFO 332 --- [movie_catalog] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-17T13:08:33.453+02:00  INFO 332 --- [movie_catalog] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-17T13:08:33.500+02:00  INFO 332 --- [movie_catalog] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 838 ms
+2026-11-17T13:08:33.611+02:00  INFO 332 --- [movie_catalog] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-17T13:08:33.660+02:00  INFO 332 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.13.Final
+2026-11-17T13:08:34.014+02:00  INFO 332 --- [movie_catalog] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-17T13:08:34.038+02:00  INFO 332 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-17T13:08:34.173+02:00  INFO 332 --- [movie_catalog] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@adc8683
+2026-11-17T13:08:34.173+02:00  INFO 332 --- [movie_catalog] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-17T13:08:34.197+02:00  WARN 332 --- [movie_catalog] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-11-17T13:08:34.214+02:00  INFO 332 --- [movie_catalog] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5433/movie_catalog]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.7
+	Default catalog/schema: movie_catalog/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-17T13:08:35.106+02:00  INFO 332 --- [movie_catalog] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-17T13:08:35.210+02:00  INFO 332 --- [movie_catalog] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T13:08:35.300+02:00  INFO 332 --- [movie_catalog] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-17T13:08:36.325+02:00  WARN 332 --- [movie_catalog] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-17T13:08:36.660+02:00  INFO 332 --- [movie_catalog] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-17T13:08:36.660+02:00  INFO 332 --- [movie_catalog] [main] c.m.m.MovieCatalogApplication            : Started MovieCatalogApplication in 4.481 seconds (process running for 4.885)
+2026-11-17T13:08:42.038+02:00  INFO 332 --- [movie_catalog] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-17T13:08:42.038+02:00  INFO 332 --- [movie_catalog] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-17T13:08:42.050+02:00  INFO 332 --- [movie_catalog] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+2026-11-17T13:09:04.838+02:00  INFO 332 --- [movie_catalog] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-17T13:09:04.846+02:00  INFO 332 --- [movie_catalog] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-11-17T13:09:04.847+02:00  INFO 332 --- [movie_catalog] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-11-17T13:09:04.849+02:00  INFO 332 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-11-17T13:09:04.851+02:00  INFO 332 --- [movie_catalog] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
