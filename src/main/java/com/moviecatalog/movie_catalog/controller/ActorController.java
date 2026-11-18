@@ -3,6 +3,8 @@ package com.moviecatalog.movie_catalog.controller;
 import com.moviecatalog.movie_catalog.dto.api.actor.ActorRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.actor.ActorResponseDTO;
 import com.moviecatalog.movie_catalog.service.ActorService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/actors")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ActorController {
     
-    private final ActorService actorService;
+    ActorService actorService;
 
     public ActorController(ActorService actorService) {
         this.actorService = actorService;

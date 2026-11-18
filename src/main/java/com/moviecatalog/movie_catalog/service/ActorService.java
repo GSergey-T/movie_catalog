@@ -7,16 +7,19 @@ import com.moviecatalog.movie_catalog.entity.Actor;
 import com.moviecatalog.movie_catalog.mapper.ActorMapper;
 import com.moviecatalog.movie_catalog.repository.ActorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ActorService {
 
-    private final ActorMapper actorMapper;
-    private final ActorRepository actorRepository;
+    ActorMapper actorMapper;
+    ActorRepository actorRepository;
 
     public ActorService(ActorMapper actorMapper, ActorRepository actorRepository) {
         this.actorMapper = actorMapper;
@@ -44,8 +47,8 @@ public class ActorService {
     @Transactional
     public ActorResponseDTO createActor(ActorRequestDTO actorRequestDTO) {
         Actor newActor = actorMapper.toActor(actorRequestDTO);
-        Actor savingActor = actorRepository.save(newActor);
-        return actorMapper.toActorResponseDTO(savingActor);
+        Actor savedActor = actorRepository.save(newActor);
+        return actorMapper.toActorResponseDTO(savedActor);
     }
 
     @Transactional

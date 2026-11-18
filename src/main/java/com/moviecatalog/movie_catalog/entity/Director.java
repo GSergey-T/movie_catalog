@@ -1,9 +1,7 @@
 package com.moviecatalog.movie_catalog.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Accessors(chain = true)
+@NoArgsConstructor
 public class Director {
 
     @Id
@@ -33,4 +32,19 @@ public class Director {
     
     @ManyToMany(mappedBy = "directorList")
     List<Movie> movieList = new ArrayList<>();
+
+    public Director(Long id, String firstName, String lastName, LocalDate birthDate, String country) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.country = country;
+    }
+
+    public Director(String firstName, String lastName, LocalDate birthDate, String country) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.country = country;
+    }
 }

@@ -11,13 +11,13 @@ import java.util.Optional;
 public interface ActorRepository extends JpaRepository<Actor, Long> {
 
     @Query("""
-        SELECT NEW com.moviecatalog.movie_catalog.dto.ActorDTO(a.id,a.firstName,a.lastName,a.birthDate,a.country)
+        SELECT NEW com.moviecatalog.movie_catalog.dto.ActorDTO( a.id,a.firstName,a.lastName,a.birthDate,a.country)
         FROM Actor a
         """)
     List<ActorDTO> findAllActors();
 
     @Query("""
-        SELECT NEW com.moviecatalog.movie_catalog.dto.ActorDTO(a.id,a.firstName,a.lastName,a.birthDate,a.country)
+        SELECT NEW com.moviecatalog.movie_catalog.dto.ActorDTO (a.id,a.firstName,a.lastName,a.birthDate,a.country)
         FROM Actor a
         WHERE a.id = :id
         """)

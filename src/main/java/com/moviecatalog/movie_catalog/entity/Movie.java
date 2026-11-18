@@ -2,7 +2,6 @@ package com.moviecatalog.movie_catalog.entity;
 
 import com.moviecatalog.movie_catalog.enums.MovieStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -27,8 +26,7 @@ public class Movie {
             allocationSize = 1             
     )
     Long id;
-
-    @NotBlank
+    
     @Column(nullable = false)
     String title;
     
