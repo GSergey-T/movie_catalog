@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Accessors(chain = true)
+@NoArgsConstructor
 public class Movie {
 
     @Id
@@ -69,5 +70,16 @@ public class Movie {
         this.durationMinutes = durationMinutes;
         this.ageRating = ageRating;
         this.status = status;
+    }
+
+    public Movie(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, LocalDateTime createdAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.releaseYear = releaseYear;
+        this.durationMinutes = durationMinutes;
+        this.ageRating = ageRating;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 }

@@ -26,7 +26,7 @@ public class MovieDTO {
     MovieStatus status;
     LocalDateTime createdAt;
 
-    public MovieDTO(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status) {
+    public MovieDTO(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -34,5 +34,6 @@ public class MovieDTO {
         this.durationMinutes = durationMinutes;
         this.ageRating = ageRating;
         this.status = status;
+        this.createdAt = createdAt;
     }
 }

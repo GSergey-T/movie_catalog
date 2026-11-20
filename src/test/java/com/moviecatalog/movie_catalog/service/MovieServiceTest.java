@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,9 @@ class MovieServiceTest {
 
     @Test
     void shouldReturnCorrectMovieById() {
-        MovieDTO movieDTO = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
-        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        LocalDateTime createdDate = LocalDateTime.now();
+        MovieDTO movieDTO = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
+        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
         
         when(movieRepository.findMovieById(1L))
                 .thenReturn(Optional.of(movieDTO));
@@ -64,12 +66,13 @@ class MovieServiceTest {
 
     @Test
     void shouldReturnCorrectAllMovie() {
-        MovieDTO movieDTO1 = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
-        MovieDTO movieDTO2 = new MovieDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED);
+        LocalDateTime createdDate = LocalDateTime.now();
+        MovieDTO movieDTO1 = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
+        MovieDTO movieDTO2 = new MovieDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED, createdDate);
         List<MovieDTO> repositoryResponse = List.of(movieDTO1, movieDTO2);
 
-        MovieResponseDTO movieResponseDTO1 = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
-        MovieResponseDTO movieResponseDTO2 = new MovieResponseDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED);
+        MovieResponseDTO movieResponseDTO1 = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
+        MovieResponseDTO movieResponseDTO2 = new MovieResponseDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED, createdDate);
         List<MovieResponseDTO> expectedResult = List.of(movieResponseDTO1, movieResponseDTO2);
 
         when(movieRepository.findAllMovies())
@@ -86,13 +89,14 @@ class MovieServiceTest {
 
     @Test
     void shouldSuccessfulCreateMovie() {
+        LocalDateTime createdDate = LocalDateTime.now();
         MovieRequestDTO request = new MovieRequestDTO("Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
-        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
 
         ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
 
         when(movieRepository.save(any(Movie.class)))
-                .thenReturn(new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED));
+                .thenReturn(new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate));
 
         var actualResult = movieService.createMovie(request);
 
@@ -106,7 +110,7 @@ class MovieServiceTest {
         assertThat(moviePassedToRepository.getAgeRating()).isEqualTo("18+");
         assertThat(moviePassedToRepository.getDurationMinutes()).isEqualTo(132);
         assertThat(moviePassedToRepository.getStatus()).isEqualTo(MovieStatus.RELEASED);
-
+        
         assertThat(actualResult).isNotNull();
         assertThat(actualResult)
                 .usingRecursiveComparison()
@@ -115,16 +119,16 @@ class MovieServiceTest {
 
     @Test
     void shouldSuccessfulUpdateMovie() {
+        LocalDateTime createdDate = LocalDateTime.now();
         MovieRequestDTO request = new MovieRequestDTO("Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
-        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
 
         when(movieRepository.findById(1L))
-                .thenReturn(Optional.of(new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED)));
+                .thenReturn(Optional.of(new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate)));
 
         var actualResult = movieService.updateMovie(1L, request);
 
         verify(movieRepository, never()).save(any(Movie.class));
-
         verify(movieRepository).findById(1L);
         assertThat(actualResult).isNotNull();
         assertThat(actualResult)
@@ -156,6 +160,7 @@ class MovieServiceTest {
 
         movieService.deleteMovie(1L);
 
+        verify(movieRepository).findById(1L);
         verify(movieRepository).delete(movie);
     }
 
