@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -19,13 +21,15 @@ public class MovieRequestDTO {
     Integer durationMinutes;
     String ageRating;
     MovieStatus status;
+    List<Long> directorIds;
 
-    public MovieRequestDTO(String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status) {
+    public MovieRequestDTO(String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, List<Long> directorIds) {
         this.title = title;
         this.description = description;
         this.releaseYear = releaseYear;
         this.durationMinutes = durationMinutes;
         this.ageRating = ageRating;
         this.status = status;
+        this.directorIds = directorIds;
     }
 }

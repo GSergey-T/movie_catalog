@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class MovieResponseDTO {
     String ageRating;
     MovieStatus status;
     LocalDateTime createdAt;
+    List<DirectorSummaryDTO> directors;
 
     public MovieResponseDTO(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, LocalDateTime createdAt) {
         this.id = id;

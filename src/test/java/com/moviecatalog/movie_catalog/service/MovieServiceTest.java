@@ -90,7 +90,7 @@ class MovieServiceTest {
     @Test
     void shouldSuccessfulCreateMovie() {
         LocalDateTime createdDate = LocalDateTime.now();
-        MovieRequestDTO request = new MovieRequestDTO("Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        MovieRequestDTO request = new MovieRequestDTO("Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, null);
         MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
 
         ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
@@ -120,7 +120,7 @@ class MovieServiceTest {
     @Test
     void shouldSuccessfulUpdateMovie() {
         LocalDateTime createdDate = LocalDateTime.now();
-        MovieRequestDTO request = new MovieRequestDTO("Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        MovieRequestDTO request = new MovieRequestDTO("Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED, null);
         MovieResponseDTO expectedResult = new MovieResponseDTO(1L, "Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
 
         when(movieRepository.findById(1L))
@@ -138,7 +138,7 @@ class MovieServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUpdatingNonExistentMovie() {
-        MovieRequestDTO request = new MovieRequestDTO("Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        MovieRequestDTO request = new MovieRequestDTO("Matrix-2", "AI", 1999, 132, "18+", MovieStatus.RELEASED, null);
 
         when(movieRepository.findById(1L))
                 .thenReturn(Optional.empty());
