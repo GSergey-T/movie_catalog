@@ -13,13 +13,13 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("""
-            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieDTO (m.id, m.title, m.description, m.releaseYear, m.durationMinutes, m.ageRating, m.status, m.createdAt)
+            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieDTO(m.id, m.title, m.description, m.releaseYear, m.durationMinutes, m.ageRating, m.status, m.createdAt)
             FROM Movie m
             """)
     List<MovieDTO> findAllMovies();
 
     @Query("""
-            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieDTO (m.id, m.title, m.description, m.releaseYear, m.durationMinutes, m.ageRating, m.status, m.createdAt)
+            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieDTO(m.id, m.title, m.description, m.releaseYear, m.durationMinutes, m.ageRating, m.status, m.createdAt)
             FROM Movie m
             WHERE m.id = :id
             """)

@@ -2,12 +2,16 @@ package com.moviecatalog.movie_catalog.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+@Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Accessors(chain = true)
+@NoArgsConstructor
 public class MovieDirectorDTO {
 
     Long movieId;
