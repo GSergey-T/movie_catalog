@@ -1,6 +1,7 @@
 package com.moviecatalog.movie_catalog.repository;
 
 import com.moviecatalog.movie_catalog.dto.MovieDTO;
+import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
 import com.moviecatalog.movie_catalog.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,4 +41,18 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             WHERE m.id IN :movieIds
             """)
     List<MovieDirectorDTO> findDirectorsByMovieIds(@Param("movieIds") List<Long> movieIds);
+
+    @Query("""
+            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieActorDTO(ma.movie.id, ma.actor.id, ma.actor.firstName, ma.actor.lastName, ma.characterName)
+            FROM MovieActor ma
+            WHERE ma.movie.id = :movieId
+            """)
+    List<MovieActorDTO> findActorsByMovieId(@Param("movieId") Long movieId);
+
+    @Query("""
+            SELECT NEW com.moviecatalog.movie_catalog.dto.MovieActorDTO(ma.movie.id, ma.actor.id, ma.actor.firstName, ma.actor.lastName, ma.characterName)
+            FROM MovieActor ma
+            WHERE ma.movie.id IN :movieIds
+            """)
+    List<MovieActorDTO> findActorsByMovieIds(@Param("movieIds") List<Long> movieIds);
 }

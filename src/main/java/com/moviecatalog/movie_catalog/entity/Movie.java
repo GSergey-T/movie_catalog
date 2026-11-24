@@ -23,22 +23,22 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_seq_gen")
     @SequenceGenerator(
             name = "movie_seq_gen",
-            sequenceName = "movie_id_seq", 
-            allocationSize = 1             
+            sequenceName = "movie_id_seq",
+            allocationSize = 1
     )
     Long id;
-    
+
     @Column(nullable = false)
     String title;
-    
+
     String description;
     Integer releaseYear;
-    
-    @Positive 
+
+    @Positive
     Integer durationMinutes;
-    
+
     String ageRating;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     MovieStatus status;
@@ -53,8 +53,10 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "director_id")
     )
     List<Director> directorList = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "movie")
+
+    @OneToMany(mappedBy = "movie",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     List<MovieActor> actorList = new ArrayList<>();
 
     @PrePersist

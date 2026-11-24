@@ -25,6 +25,7 @@ public class MovieResponseDTO {
     MovieStatus status;
     LocalDateTime createdAt;
     List<DirectorSummaryDTO> directors;
+    List<MovieActorResponseDTO> actors;
 
     public MovieResponseDTO(Long id, String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, LocalDateTime createdAt) {
         this.id = id;

@@ -3,6 +3,7 @@ package com.moviecatalog.movie_catalog.service;
 import com.moviecatalog.movie_catalog.dto.MovieDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.DirectorSummaryDTO;
+import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorResponseDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieResponseDTO;
 import com.moviecatalog.movie_catalog.entity.Director;
@@ -55,7 +56,7 @@ class MovieServiceTest {
         LocalDateTime createdDate = LocalDateTime.now();
         MovieDTO movieDTO = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")));
+                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
 
         when(movieRepository.findMovieById(1L))
                 .thenReturn(Optional.of(movieDTO));
@@ -75,7 +76,7 @@ class MovieServiceTest {
     @Test
     void shouldReturnMovieByIdWithEmptyDirectorsWhenMovieHasNone() {
         LocalDateTime createdDate = LocalDateTime.now();
-        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, Collections.emptyList());
+        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, Collections.emptyList(), List.of());
 
         when(movieRepository.findMovieById(1L))
                 .thenReturn(Optional.of(new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate)));
@@ -108,9 +109,9 @@ class MovieServiceTest {
         List<MovieDTO> repositoryResponse = List.of(movieDTO1, movieDTO2);
 
         MovieResponseDTO movieResponseDTO1 = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")));
+                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
         MovieResponseDTO movieResponseDTO2 = formingMovieResponseDTO(2L, "Matrix-2", 2003, createdDate,
-                List.of(new DirectorSummaryDTO(5L, "Denis", "Villeneuve")));
+                List.of(new DirectorSummaryDTO(5L, "Denis", "Villeneuve")), List.of());
         List<MovieResponseDTO> expectedResult = List.of(movieResponseDTO1, movieResponseDTO2);
 
         when(movieRepository.findAllMovies())
@@ -145,7 +146,7 @@ class MovieServiceTest {
     void shouldCreateMovieWithoutDirectors() {
         LocalDateTime createdDate = LocalDateTime.now();
         MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of());
-        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, List.of());
+        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, List.of(), List.of());
 
         ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
 
@@ -260,7 +261,7 @@ class MovieServiceTest {
         Director replacementDirector = formingDirectorEntity(4L, "Lana", "Wachowski");
         MovieRequestDTO request = formingMovieRequestDTO("Matrix-2", List.of(4L));
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix-2", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")));
+                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
 
         when(movieRepository.findById(1L))
                 .thenReturn(Optional.of(existingMovie));
@@ -337,9 +338,10 @@ class MovieServiceTest {
         return new MovieRequestDTO(title, "AI", 1999, 132, "18+", MovieStatus.RELEASED, directorIds);
     }
 
-    private MovieResponseDTO formingMovieResponseDTO(Long id, String title, Integer releaseYear, LocalDateTime createdAt, List<DirectorSummaryDTO> directors) {
+    private MovieResponseDTO formingMovieResponseDTO(Long id, String title, Integer releaseYear, LocalDateTime createdAt, List<DirectorSummaryDTO> directors, List<MovieActorResponseDTO> actors) {
         return new MovieResponseDTO(id, title, "AI", releaseYear, 132, "18+", MovieStatus.RELEASED, createdAt)
-                .setDirectors(directors);
+                .setDirectors(directors)
+                .setActors(actors);
     }
 
     private Director formingDirectorEntity(Long id, String firstName, String lastName) {
