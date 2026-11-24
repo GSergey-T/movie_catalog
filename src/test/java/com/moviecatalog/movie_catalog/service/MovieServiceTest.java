@@ -1,16 +1,21 @@
 package com.moviecatalog.movie_catalog.service;
 
 import com.moviecatalog.movie_catalog.dto.MovieDTO;
+import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.DirectorSummaryDTO;
+import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorResponseDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieResponseDTO;
+import com.moviecatalog.movie_catalog.entity.Actor;
 import com.moviecatalog.movie_catalog.entity.Director;
 import com.moviecatalog.movie_catalog.entity.Movie;
+import com.moviecatalog.movie_catalog.entity.MovieActor;
 import com.moviecatalog.movie_catalog.enums.MovieStatus;
 import com.moviecatalog.movie_catalog.mapper.DirectorMapper;
 import com.moviecatalog.movie_catalog.mapper.MovieMapper;
+import com.moviecatalog.movie_catalog.repository.ActorRepository;
 import com.moviecatalog.movie_catalog.repository.DirectorRepository;
 import com.moviecatalog.movie_catalog.repository.MovieRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +29,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +47,9 @@ class MovieServiceTest {
     @Mock
     private DirectorRepository directorRepository;
 
+    @Mock
+    private ActorRepository actorRepository;
+
     @Spy
     private DirectorMapper directorMapper = Mappers.getMapper(DirectorMapper.class);
 
@@ -52,16 +61,19 @@ class MovieServiceTest {
     private MovieService movieService;
 
     @Test
-    void shouldReturnMovieByIdWithDirectors() {
+    void shouldReturnMovieByIdWithDirectorsAndActors() {
         LocalDateTime createdDate = LocalDateTime.now();
-        MovieDTO movieDTO = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
+
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
+                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")),
+                List.of(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo")));
 
         when(movieRepository.findMovieById(1L))
-                .thenReturn(Optional.of(movieDTO));
+                .thenReturn(Optional.of(new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate)));
         when(movieRepository.findDirectorsByMovieId(1L))
                 .thenReturn(List.of(new MovieDirectorDTO(1L, 4L, "Lana", "Wachowski")));
+        when(movieRepository.findActorsByMovieId(1L))
+                .thenReturn(List.of(new MovieActorDTO(1L, 6L, "Keanu", "Reeves", "Neo")));
 
         var actualResult = movieService.getMovieById(1L);
 
@@ -71,16 +83,19 @@ class MovieServiceTest {
                 .isEqualTo(expectedResult);
         verify(movieRepository).findMovieById(1L);
         verify(movieRepository).findDirectorsByMovieId(1L);
+        verify(movieRepository).findActorsByMovieId(1L);
     }
 
     @Test
-    void shouldReturnMovieByIdWithEmptyDirectorsWhenMovieHasNone() {
+    void shouldReturnEmptyAssociationListsWhenMovieHasNoDirectorsOrActors() {
         LocalDateTime createdDate = LocalDateTime.now();
-        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, Collections.emptyList(), List.of());
+        MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, Collections.emptyList(), Collections.emptyList());
 
         when(movieRepository.findMovieById(1L))
                 .thenReturn(Optional.of(new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate)));
         when(movieRepository.findDirectorsByMovieId(1L))
+                .thenReturn(List.of());
+        when(movieRepository.findActorsByMovieId(1L))
                 .thenReturn(List.of());
 
         MovieResponseDTO actualResult = movieService.getMovieById(1L);
@@ -89,6 +104,7 @@ class MovieServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedResult);
         assertThat(actualResult.getDirectors()).isEmpty();
+        assertThat(actualResult.getActors()).isEmpty();
     }
 
     @Test
@@ -99,19 +115,25 @@ class MovieServiceTest {
         assertThatThrownBy(() -> movieService.getMovieById(1L))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Movie not found with id: " + 1L);
+
+        verify(movieRepository).findMovieById(1L);
+        verify(movieRepository, never()).findDirectorsByMovieId(anyLong());
+        verify(movieRepository, never()).findActorsByMovieId(anyLong());
     }
 
     @Test
-    void shouldReturnAllMoviesWithDirectorsGroupedByMovie() {
+    void shouldReturnAllMoviesWithDirectorsAndActorsGroupedByMovie() {
         LocalDateTime createdDate = LocalDateTime.now();
+
         MovieDTO movieDTO1 = new MovieDTO(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
         MovieDTO movieDTO2 = new MovieDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED, createdDate);
         List<MovieDTO> repositoryResponse = List.of(movieDTO1, movieDTO2);
-
         MovieResponseDTO movieResponseDTO1 = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
+                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")),
+                List.of(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo")));
         MovieResponseDTO movieResponseDTO2 = formingMovieResponseDTO(2L, "Matrix-2", 2003, createdDate,
-                List.of(new DirectorSummaryDTO(5L, "Denis", "Villeneuve")), List.of());
+                List.of(new DirectorSummaryDTO(5L, "Denis", "Villeneuve")),
+                List.of(new MovieActorResponseDTO(7L, "Laurence", "Fishburne", "Morpheus")));
         List<MovieResponseDTO> expectedResult = List.of(movieResponseDTO1, movieResponseDTO2);
 
         when(movieRepository.findAllMovies())
@@ -120,6 +142,11 @@ class MovieServiceTest {
                 .thenReturn(List.of(
                         new MovieDirectorDTO(1L, 4L, "Lana", "Wachowski"),
                         new MovieDirectorDTO(2L, 5L, "Denis", "Villeneuve")
+                ));
+        when(movieRepository.findActorsByMovieIds(List.of(1L, 2L)))
+                .thenReturn(List.of(
+                        new MovieActorDTO(1L, 6L, "Keanu", "Reeves", "Neo"),
+                        new MovieActorDTO(2L, 7L, "Laurence", "Fishburne", "Morpheus")
                 ));
 
         var actualResult = movieService.getAllMovies();
@@ -130,20 +157,85 @@ class MovieServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedResult);
         verify(movieRepository).findDirectorsByMovieIds(List.of(1L, 2L));
+        verify(movieRepository).findActorsByMovieIds(List.of(1L, 2L));
         verify(movieRepository, never()).findDirectorsByMovieId(anyLong());
+        verify(movieRepository, never()).findActorsByMovieId(anyLong());
     }
 
     @Test
-    void shouldNotQueryDirectorsWhenNoMoviesAreFound() {
+    void shouldReturnEmptyAssociationListsForMovieWithoutActorsAndDirectors() {
+        LocalDateTime createdDate = LocalDateTime.now();
+
+        MovieDTO firstMovie = new MovieDTO(
+                1L, "Matrix", "AI", 1999, 132, "18+",
+                MovieStatus.RELEASED, createdDate
+        );
+        MovieDTO secondMovie = new MovieDTO(
+                2L, "Interstellar", "Space", 2014, 169, "12+",
+                MovieStatus.RELEASED, createdDate
+        );
+
+        when(movieRepository.findAllMovies())
+                .thenReturn(List.of(firstMovie, secondMovie));
+
+        when(movieRepository.findDirectorsByMovieIds(List.of(1L, 2L)))
+                .thenReturn(List.of(
+                        new MovieDirectorDTO(1L, 4L, "Lana", "Wachowski")
+                ));
+
+        when(movieRepository.findActorsByMovieIds(List.of(1L, 2L)))
+                .thenReturn(List.of(
+                        new MovieActorDTO(1L, 6L, "Keanu", "Reeves", "Neo")
+                ));
+
+        List<MovieResponseDTO> result = movieService.getAllMovies();
+
+        assertThat(result).hasSize(2);
+
+        assertThat(result.get(0).getActors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"));
+        assertThat(result.get(0).getDirectors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(new DirectorSummaryDTO(4L, "Lana", "Wachowski"));
+
+        assertThat(result.get(1).getActors()).isEmpty();
+        assertThat(result.get(1).getDirectors()).isEmpty();
+    }
+
+    @Test
+    void shouldNotQueryDirectorsAndActorsWhenNoMoviesAreFound() {
         when(movieRepository.findAllMovies()).thenReturn(List.of());
 
         assertThat(movieService.getAllMovies()).isEmpty();
 
         verify(movieRepository, never()).findDirectorsByMovieIds(anyList());
+        verify(movieRepository, never()).findActorsByMovieIds(anyList());
     }
 
     @Test
-    void shouldCreateMovieWithoutDirectors() {
+    void shouldThrowExceptionWhenCreatingMovieWithOneUnknownActorAmongMultipleActors() {
+        Actor existingActor = formingActorEntity(6L, "Keanu", "Reeves");
+
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of())
+                .setActors(List.of(
+                        new MovieActorRequestDTO(6L, "Neo"),
+                        new MovieActorRequestDTO(404L, "Unknown")
+                ));
+
+        when(actorRepository.findAllById(List.of(6L, 404L)))
+                .thenReturn(List.of(existingActor));
+
+        assertThatThrownBy(() -> movieService.createMovie(request))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("404");
+
+        verify(actorRepository).findAllById(List.of(6L, 404L));
+        verify(movieRepository, never()).save(any(Movie.class));
+    }
+
+    @Test
+    void shouldCreateMovieWithoutDirectorsOrActors() {
         LocalDateTime createdDate = LocalDateTime.now();
         MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of());
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate, List.of(), List.of());
@@ -152,11 +244,11 @@ class MovieServiceTest {
 
         when(movieRepository.save(any(Movie.class)))
                 .thenAnswer(invocation -> {
-            Movie movie = invocation.getArgument(0);
-            movie.setId(1L);
-            movie.setCreatedAt(createdDate);
-            return movie;
-        });
+                    Movie movie = invocation.getArgument(0);
+                    movie.setId(1L);
+                    movie.setCreatedAt(createdDate);
+                    return movie;
+                });
 
         var actualResult = movieService.createMovie(request);
 
@@ -171,12 +263,101 @@ class MovieServiceTest {
         assertThat(moviePassedToRepository.getDurationMinutes()).isEqualTo(132);
         assertThat(moviePassedToRepository.getStatus()).isEqualTo(MovieStatus.RELEASED);
         assertThat(moviePassedToRepository.getDirectorList()).isEmpty();
+        assertThat(moviePassedToRepository.getActorList()).isEmpty();
 
         assertThat(actualResult).isNotNull();
         assertThat(actualResult)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedResult);
         verify(directorRepository, never()).findAllById(anyList());
+        verify(actorRepository, never()).findAllById(anyList());
+    }
+
+    @Test
+    void shouldCreateMovieWithOneActorAndCharacter() {
+        LocalDateTime createdDate = LocalDateTime.now();
+        Actor actor = formingActorEntity(6L, "Keanu", "Reeves");
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of())
+                .setActors(List.of(new MovieActorRequestDTO(6L, "Neo")));
+
+        when(actorRepository.findAllById(List.of(6L))).thenReturn(List.of(actor));
+        when(movieRepository.save(any(Movie.class)))
+                .thenAnswer(invocation -> {
+                    Movie movie = invocation.getArgument(0);
+                    movie.setId(1L);
+                    movie.setCreatedAt(createdDate);
+                    return movie;
+                });
+
+        MovieResponseDTO actualResult = movieService.createMovie(request);
+
+        ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
+        
+        verify(actorRepository).findAllById(List.of(6L));
+        verify(movieRepository).save(movieCaptor.capture());
+        
+        assertThat(movieCaptor.getValue().getActorList()).hasSize(1);
+        MovieActor movieActor = movieCaptor.getValue().getActorList().getFirst();
+        
+        assertThat(movieActor.getMovie()).isSameAs(movieCaptor.getValue());
+        assertThat(movieActor.getActor()).isSameAs(actor);
+        assertThat(movieActor.getCharacterName()).isEqualTo("Neo");
+        assertThat(actualResult.getActors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"));
+    }
+
+    @Test
+    void shouldCreateMovieWithMultipleActors() {
+        LocalDateTime createdDate = LocalDateTime.now();
+        Actor firstActor = formingActorEntity(6L, "Keanu", "Reeves");
+        Actor secondActor = formingActorEntity(7L, "Laurence", "Fishburne");
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of())
+                .setActors(List.of(
+                        new MovieActorRequestDTO(6L, "Neo"),
+                        new MovieActorRequestDTO(7L, "Morpheus")
+                ));
+
+        when(actorRepository.findAllById(List.of(6L, 7L))).thenReturn(List.of(firstActor, secondActor));
+        when(movieRepository.save(any(Movie.class))).thenAnswer(invocation -> {
+            Movie movie = invocation.getArgument(0);
+            movie.setId(1L);
+            movie.setCreatedAt(createdDate);
+            return movie;
+        });
+
+        MovieResponseDTO actualResult = movieService.createMovie(request);
+
+        ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
+        
+        verify(actorRepository).findAllById(List.of(6L, 7L));
+        verify(movieRepository).save(movieCaptor.capture());
+        
+        assertThat(movieCaptor.getValue().getActorList()).hasSize(2);
+        assertThat(movieCaptor.getValue().getActorList().get(0).getActor()).isSameAs(firstActor);
+        assertThat(movieCaptor.getValue().getActorList().get(0).getCharacterName()).isEqualTo("Neo");
+        assertThat(movieCaptor.getValue().getActorList().get(1).getActor()).isSameAs(secondActor);
+        assertThat(movieCaptor.getValue().getActorList().get(1).getCharacterName()).isEqualTo("Morpheus");
+        assertThat(actualResult.getActors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(
+                        new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"),
+                        new MovieActorResponseDTO(7L, "Laurence", "Fishburne", "Morpheus")
+                );
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCreatingMovieWithUnknownActorId() {
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of())
+                .setActors(List.of(new MovieActorRequestDTO(404L, "Unknown")));
+        
+        when(actorRepository.findAllById(List.of(404L))).thenReturn(List.of());
+
+        assertThatThrownBy(() -> movieService.createMovie(request))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("404");
+
+        verify(movieRepository, never()).save(any(Movie.class));
     }
 
     @Test
@@ -184,7 +365,7 @@ class MovieServiceTest {
         LocalDateTime createdDate = LocalDateTime.now();
         Director director = formingDirectorEntity(4L, "Lana", "Wachowski");
         MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of(4L));
-        
+
         when(directorRepository.findAllById(List.of(4L))).thenReturn(List.of(director));
         when(movieRepository.save(any(Movie.class))).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);
@@ -212,7 +393,7 @@ class MovieServiceTest {
         Director firstDirector = formingDirectorEntity(4L, "Lana", "Wachowski");
         Director secondDirector = formingDirectorEntity(5L, "Lilly", "Wachowski");
         MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of(4L, 5L));
-        
+
         when(directorRepository.findAllById(List.of(4L, 5L)))
                 .thenReturn(List.of(firstDirector, secondDirector));
         when(movieRepository.save(any(Movie.class))).thenAnswer(invocation -> {
@@ -234,15 +415,15 @@ class MovieServiceTest {
         assertThat(actualResult.getDirectors())
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(
-                new DirectorSummaryDTO(4L, "Lana", "Wachowski"),
-                new DirectorSummaryDTO(5L, "Lilly", "Wachowski")
-        );
+                        new DirectorSummaryDTO(4L, "Lana", "Wachowski"),
+                        new DirectorSummaryDTO(5L, "Lilly", "Wachowski")
+                );
     }
 
     @Test
     void shouldThrowExceptionWhenCreatingMovieWithUnknownDirectorId() {
         MovieRequestDTO request = formingMovieRequestDTO("Matrix", List.of(404L));
-        
+
         when(directorRepository.findAllById(List.of(404L))).thenReturn(List.of());
 
         assertThatThrownBy(() -> movieService.createMovie(request))
@@ -252,6 +433,91 @@ class MovieServiceTest {
         verify(movieRepository, never()).save(any(Movie.class));
     }
 
+    @Test
+    void shouldUpdateMovieAndReplaceActorsWithMultipleActors() {
+        Movie movie = new Movie(
+                1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED
+        );
+
+        Actor oldActor = formingActorEntity(5L, "Old", "Actor");
+        MovieActor oldMovieActor = new MovieActor()
+                .setMovie(movie)
+                .setActor(oldActor)
+                .setCharacterName("Old Character");
+
+        movie.setActorList(new ArrayList<>(List.of(oldMovieActor)));
+
+        Actor firstActor = formingActorEntity(6L, "Keanu", "Reeves");
+        Actor secondActor = formingActorEntity(7L, "Laurence", "Fishburne");
+
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix-2", List.of())
+                .setActors(List.of(
+                        new MovieActorRequestDTO(6L, "Neo"),
+                        new MovieActorRequestDTO(7L, "Morpheus")
+                ));
+
+        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
+        when(actorRepository.findAllById(List.of(6L, 7L)))
+                .thenReturn(List.of(firstActor, secondActor));
+
+        MovieResponseDTO result = movieService.updateMovie(1L, request);
+
+        assertThat(movie.getActorList()).hasSize(2);
+
+        assertThat(movie.getActorList())
+                .extracting(MovieActor::getActor)
+                .containsExactly(firstActor, secondActor);
+
+        assertThat(movie.getActorList())
+                .extracting(MovieActor::getCharacterName)
+                .containsExactly("Neo", "Morpheus");
+
+        assertThat(movie.getActorList())
+                .allSatisfy(movieActor ->
+                        assertThat(movieActor.getMovie()).isSameAs(movie)
+                );
+
+        assertThat(result.getActors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(
+                        new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"),
+                        new MovieActorResponseDTO(7L, "Laurence", "Fishburne", "Morpheus")
+                );
+
+        verify(actorRepository).findAllById(List.of(6L, 7L));
+        verify(movieRepository, never()).save(any(Movie.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingMovieWithUnknownActorId() {
+        Movie movie = new Movie(
+                1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED
+        );
+
+        Actor existingActor = formingActorEntity(5L, "Old", "Actor");
+        MovieActor existingMovieActor = new MovieActor()
+                .setMovie(movie)
+                .setActor(existingActor)
+                .setCharacterName("Old Character");
+
+        movie.setActorList(new ArrayList<>(List.of(existingMovieActor)));
+
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix-2", List.of())
+                .setActors(List.of(new MovieActorRequestDTO(404L, "Unknown")));
+
+        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
+        when(actorRepository.findAllById(List.of(404L))).thenReturn(List.of());
+
+        assertThatThrownBy(() -> movieService.updateMovie(1L, request))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("404");
+
+        assertThat(movie.getActorList()).containsExactly(existingMovieActor);
+
+        verify(actorRepository).findAllById(List.of(404L));
+        verify(movieRepository, never()).save(any(Movie.class));
+    }
+    
     @Test
     void shouldUpdateMovieAndReplaceDirectors() {
         LocalDateTime createdDate = LocalDateTime.now();
@@ -279,7 +545,60 @@ class MovieServiceTest {
     }
 
     @Test
-    void shouldClearMovieDirectorsWhenUpdatingWithEmptyDirectorIds() {
+    void shouldUpdateMovieAndReplaceActors() {
+        LocalDateTime createdDate = LocalDateTime.now();
+        Movie movie = new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
+        Actor oldActor = formingActorEntity(5L, "Old", "Actor");
+        MovieActor oldMovieActor = new MovieActor()
+                .setMovie(movie)
+                .setActor(oldActor)
+                .setCharacterName("Old Character");
+        movie.setActorList(new ArrayList<>(List.of(oldMovieActor)));
+
+        Actor replacementActor = formingActorEntity(6L, "Keanu", "Reeves");
+        MovieRequestDTO request = formingMovieRequestDTO("Matrix-2", List.of())
+                .setActors(List.of(new MovieActorRequestDTO(6L, "Neo")));
+        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
+        when(actorRepository.findAllById(List.of(6L))).thenReturn(List.of(replacementActor));
+
+        MovieResponseDTO actualResult = movieService.updateMovie(1L, request);
+
+        verify(movieRepository, never()).save(any(Movie.class));
+        verify(actorRepository).findAllById(List.of(6L));
+        assertThat(movie.getActorList()).hasSize(1);
+        MovieActor updatedMovieActor = movie.getActorList().getFirst();
+        assertThat(updatedMovieActor).isNotSameAs(oldMovieActor);
+        assertThat(updatedMovieActor.getMovie()).isSameAs(movie);
+        assertThat(updatedMovieActor.getActor()).isSameAs(replacementActor);
+        assertThat(updatedMovieActor.getCharacterName()).isEqualTo("Neo");
+        assertThat(actualResult.getActors())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"));
+    }
+
+    @Test
+    void shouldClearMovieActorsWhenUpdatingWithEmptyActors() {
+        Movie movie = new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED);
+        Actor actor = formingActorEntity(6L, "Keanu", "Reeves");
+        movie.setActorList(new ArrayList<>(List.of(
+                new MovieActor().setMovie(movie).setActor(actor).setCharacterName("Neo")
+        )));
+        
+        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
+
+        MovieResponseDTO actualResult = movieService.updateMovie(
+                1L,
+                formingMovieRequestDTO("Matrix", List.of()).setActors(List.of())
+        );
+
+        assertThat(movie.getActorList()).isEmpty();
+        assertThat(actualResult.getActors()).isEmpty();
+        verify(actorRepository, never()).findAllById(anyList());
+        verify(movieRepository, never()).save(any(Movie.class));
+    }
+
+    @Test
+    void shouldClearMovieDirectorsWhenUpdatingWithEmptyDirectors() {
         LocalDateTime createdDate = LocalDateTime.now();
         Movie movie = new Movie(1L, "Matrix", "AI", 1999, 132, "18+", MovieStatus.RELEASED, createdDate);
         movie.setDirectorList(List.of(formingDirectorEntity(3L, "Existing", "Director")));
@@ -346,5 +665,9 @@ class MovieServiceTest {
 
     private Director formingDirectorEntity(Long id, String firstName, String lastName) {
         return new Director(id, firstName, lastName, null, "USA");
+    }
+
+    private Actor formingActorEntity(Long id, String firstName, String lastName) {
+        return new Actor(id, firstName, lastName, null, "USA");
     }
 }

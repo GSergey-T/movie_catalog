@@ -17,6 +17,7 @@ import org.mapstruct.MappingTarget;
         uses = DirectorMapper.class)
 public interface MovieMapper {
 
+    @Mapping(target = "directorList", ignore = true)
     @Mapping(target = "actorList", ignore = true)
     Movie toMovie(MovieRequestDTO movieRequestDTO);
 
