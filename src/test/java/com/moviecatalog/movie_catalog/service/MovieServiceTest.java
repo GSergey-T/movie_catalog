@@ -3,11 +3,7 @@ package com.moviecatalog.movie_catalog.service;
 import com.moviecatalog.movie_catalog.dto.MovieDTO;
 import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.DirectorSummaryDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorRequestDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorResponseDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.MovieRequestDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.MovieResponseDTO;
+import com.moviecatalog.movie_catalog.dto.api.movie.*;
 import com.moviecatalog.movie_catalog.entity.Actor;
 import com.moviecatalog.movie_catalog.entity.Director;
 import com.moviecatalog.movie_catalog.entity.Movie;
@@ -65,7 +61,7 @@ class MovieServiceTest {
         LocalDateTime createdDate = LocalDateTime.now();
 
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")),
+                List.of(new MovieDirectorResponseDTO(4L, "Lana", "Wachowski")),
                 List.of(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo")));
 
         when(movieRepository.findMovieById(1L))
@@ -129,10 +125,10 @@ class MovieServiceTest {
         MovieDTO movieDTO2 = new MovieDTO(2L, "Matrix-2", "AI", 2003, 132, "18+", MovieStatus.RELEASED, createdDate);
         List<MovieDTO> repositoryResponse = List.of(movieDTO1, movieDTO2);
         MovieResponseDTO movieResponseDTO1 = formingMovieResponseDTO(1L, "Matrix", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")),
+                List.of(new MovieDirectorResponseDTO(4L, "Lana", "Wachowski")),
                 List.of(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo")));
         MovieResponseDTO movieResponseDTO2 = formingMovieResponseDTO(2L, "Matrix-2", 2003, createdDate,
-                List.of(new DirectorSummaryDTO(5L, "Denis", "Villeneuve")),
+                List.of(new MovieDirectorResponseDTO(5L, "Denis", "Villeneuve")),
                 List.of(new MovieActorResponseDTO(7L, "Laurence", "Fishburne", "Morpheus")));
         List<MovieResponseDTO> expectedResult = List.of(movieResponseDTO1, movieResponseDTO2);
 
@@ -197,7 +193,7 @@ class MovieServiceTest {
                 .containsExactly(new MovieActorResponseDTO(6L, "Keanu", "Reeves", "Neo"));
         assertThat(result.get(0).getDirectors())
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactly(new DirectorSummaryDTO(4L, "Lana", "Wachowski"));
+                .containsExactly(new MovieDirectorResponseDTO(4L, "Lana", "Wachowski"));
 
         assertThat(result.get(1).getActors()).isEmpty();
         assertThat(result.get(1).getDirectors()).isEmpty();
@@ -384,7 +380,7 @@ class MovieServiceTest {
                 .containsExactly(director);
         assertThat(actualResult.getDirectors())
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactly(new DirectorSummaryDTO(4L, "Lana", "Wachowski"));
+                .containsExactly(new MovieDirectorResponseDTO(4L, "Lana", "Wachowski"));
     }
 
     @Test
@@ -415,8 +411,8 @@ class MovieServiceTest {
         assertThat(actualResult.getDirectors())
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(
-                        new DirectorSummaryDTO(4L, "Lana", "Wachowski"),
-                        new DirectorSummaryDTO(5L, "Lilly", "Wachowski")
+                        new MovieDirectorResponseDTO(4L, "Lana", "Wachowski"),
+                        new MovieDirectorResponseDTO(5L, "Lilly", "Wachowski")
                 );
     }
 
@@ -527,7 +523,7 @@ class MovieServiceTest {
         Director replacementDirector = formingDirectorEntity(4L, "Lana", "Wachowski");
         MovieRequestDTO request = formingMovieRequestDTO("Matrix-2", List.of(4L));
         MovieResponseDTO expectedResult = formingMovieResponseDTO(1L, "Matrix-2", 1999, createdDate,
-                List.of(new DirectorSummaryDTO(4L, "Lana", "Wachowski")), List.of());
+                List.of(new MovieDirectorResponseDTO(4L, "Lana", "Wachowski")), List.of());
 
         when(movieRepository.findById(1L))
                 .thenReturn(Optional.of(existingMovie));
@@ -657,7 +653,7 @@ class MovieServiceTest {
         return new MovieRequestDTO(title, "AI", 1999, 132, "18+", MovieStatus.RELEASED, directorIds);
     }
 
-    private MovieResponseDTO formingMovieResponseDTO(Long id, String title, Integer releaseYear, LocalDateTime createdAt, List<DirectorSummaryDTO> directors, List<MovieActorResponseDTO> actors) {
+    private MovieResponseDTO formingMovieResponseDTO(Long id, String title, Integer releaseYear, LocalDateTime createdAt, List<MovieDirectorResponseDTO> directors, List<MovieActorResponseDTO> actors) {
         return new MovieResponseDTO(id, title, "AI", releaseYear, 132, "18+", MovieStatus.RELEASED, createdAt)
                 .setDirectors(directors)
                 .setActors(actors);

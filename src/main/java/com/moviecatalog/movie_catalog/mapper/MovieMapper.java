@@ -24,7 +24,7 @@ public interface MovieMapper {
     @Mapping(
             target = "directors",
             source = "directorList",
-            qualifiedByName = "toDirectorSummary"
+            qualifiedByName = "toMovieDirector"
     )
     @Mapping(target = "actors", source = "actorList")
     MovieResponseDTO toMovieResponseDTO(Movie movie);

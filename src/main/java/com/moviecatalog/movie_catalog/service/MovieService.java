@@ -4,7 +4,7 @@ import com.moviecatalog.movie_catalog.dto.MovieDTO;
 import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieResponseDTO;
-import com.moviecatalog.movie_catalog.dto.api.movie.DirectorSummaryDTO;
+import com.moviecatalog.movie_catalog.dto.api.movie.MovieDirectorResponseDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorRequestDTO;
 import com.moviecatalog.movie_catalog.dto.api.movie.MovieActorResponseDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
@@ -57,8 +57,8 @@ public class MovieService {
         MovieResponseDTO response = movieMapper.toMovieResponseDTO(movieDTO);
 
         List<MovieDirectorDTO> directorList = movieRepository.findDirectorsByMovieId(id);
-        List<DirectorSummaryDTO> directorSummaryDTOList = directorList.stream()
-                .map(directorMapper::toDirectorSummaryDTO)
+        List<MovieDirectorResponseDTO> movieDirectorResponseDTOList = directorList.stream()
+                .map(directorMapper::toMovieDirectorDTO)
                 .toList();
 
         List<MovieActorDTO> actorList = movieRepository.findActorsByMovieId(id);
@@ -66,7 +66,7 @@ public class MovieService {
                 .map(movieMapper::toMovieActorResponseDTO)
                 .toList();
 
-        response.setDirectors(directorSummaryDTOList);
+        response.setDirectors(movieDirectorResponseDTOList);
         response.setActors(movieActorResponseDTOList);
 
         return response;
@@ -87,12 +87,12 @@ public class MovieService {
                 .distinct()
                 .toList();
 
-        Map<Long, List<DirectorSummaryDTO>> movieIdDirectorsMap = movieRepository.findDirectorsByMovieIds(movieIds)
+        Map<Long, List<MovieDirectorResponseDTO>> movieIdDirectorsMap = movieRepository.findDirectorsByMovieIds(movieIds)
                 .stream()
                 .collect(Collectors.groupingBy(
                         MovieDirectorDTO::getMovieId,
                         LinkedHashMap::new,
-                        Collectors.mapping(directorMapper::toDirectorSummaryDTO, Collectors.toList())
+                        Collectors.mapping(directorMapper::toMovieDirectorDTO, Collectors.toList())
                 ));
 
         Map<Long, List<MovieActorResponseDTO>> movieIdActorsMap = movieRepository

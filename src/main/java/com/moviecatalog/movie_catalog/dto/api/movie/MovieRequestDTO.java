@@ -26,7 +26,13 @@ public class MovieRequestDTO {
     List<Long> directorIds;
     List<MovieActorRequestDTO> actors;
 
-    public MovieRequestDTO(String title, String description, Integer releaseYear, Integer durationMinutes, String ageRating, MovieStatus status, List<Long> directorIds) {
+    public MovieRequestDTO(String title, 
+                           String description, 
+                           Integer releaseYear, 
+                           Integer durationMinutes, 
+                           String ageRating, 
+                           MovieStatus status, 
+                           List<Long> directorIds) {
         this.title = title;
         this.description = description;
         this.releaseYear = releaseYear;

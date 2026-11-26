@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class DirectorSummaryDTO {
+public class MovieDirectorResponseDTO {
 
     Long id;
     String firstName;
