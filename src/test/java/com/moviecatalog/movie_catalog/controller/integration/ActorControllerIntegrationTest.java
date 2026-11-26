@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.liquibase.enabled=false",
         "spring.jpa.show-sql=false"
 })
-@AutoConfigureTestRestTemplate
+@AutoConfigureTestRestTemplate  
 class ActorControllerIntegrationTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
@@ -58,13 +58,24 @@ class ActorControllerIntegrationTest extends AbstractPostgresIntegrationTest {
 
     @Test
     void createActorReturnsCreatedAndPersistsActor() {
-        ActorRequestDTO request = new ActorRequestDTO("Viola", "Davis", LocalDate.of(1965, 8, 11), "USA");
+        ActorRequestDTO request = new ActorRequestDTO(
+                "Viola", "Davis", LocalDate.of(1965, 8, 11), "USA"
+        );
 
         ResponseEntity<ActorResponseDTO> response = restTemplate.postForEntity(
                 "/api/actors", request, ActorResponseDTO.class
         );
 
-        assertActorResponse(response.getBody(), response.getBody().getId(), "Viola", "Davis", LocalDate.of(1965, 8, 11), "USA");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        ActorResponseDTO createdActor = response.getBody();
+        assertThat(createdActor).isNotNull();
+        assertActorResponse(createdActor, createdActor.getId(), "Viola", "Davis", LocalDate.of(1965, 8, 11), "USA");
+
+        Actor savedActor = actorRepository.findById(createdActor.getId()).orElseThrow();
+        assertThat(savedActor.getFirstName()).isEqualTo("Viola");
+        assertThat(savedActor.getLastName()).isEqualTo("Davis");
+        assertThat(savedActor.getBirthDate()).isEqualTo(LocalDate.of(1965, 8, 11));
+        assertThat(savedActor.getCountry()).isEqualTo("USA");
     }
 
     @Test
