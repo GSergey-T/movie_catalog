@@ -1,5 +1,6 @@
 package com.moviecatalog.movie_catalog.repository.integration;
 
+import com.moviecatalog.movie_catalog.integration.support.AbstractPostgresIntegrationTest;
 import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDirectorDTO;
 import com.moviecatalog.movie_catalog.dto.MovieDTO;
@@ -12,16 +13,9 @@ import com.moviecatalog.movie_catalog.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.List;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,29 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "spring.liquibase.enabled=false"
         }
 )
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Testcontainers
-class MovieRepositoryTest {
-
-    @Container
-    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:16-alpine")
-            .withDatabaseName("movie_catalog_test")
-            .withUsername("testUser")
-            .withPassword("testPassword");
+class MovieRepositoryTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
     private MovieRepository movieRepository;
 
     @Autowired
     private TestEntityManager entityManager;
-
-    @DynamicPropertySource
-    static void registerPostgresProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES::getUsername);
-        registry.add("spring.datasource.password", POSTGRES::getPassword);
-        registry.add("spring.datasource.hikari.driver-class-name", POSTGRES::getDriverClassName);
-    }
 
     @Test
     void findActorsByMovieIdReturnsTheActorAndCharacterForThatMovie() {
