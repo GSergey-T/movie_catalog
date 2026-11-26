@@ -3,19 +3,25 @@ package com.moviecatalog.movie_catalog.integration.support;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-@Testcontainers
+//@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class AbstractPostgresIntegrationTest {
-
-    @Container
+    
+//    @Container
     protected static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:16-alpine")
             .withDatabaseName("movie_catalog_test")
             .withUsername("testUser")
             .withPassword("testPassword");
+
+    static {
+        POSTGRES.start();
+
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(POSTGRES::stop)
+        );
+    }
 
     @DynamicPropertySource
     protected static void registerPostgresProperties(DynamicPropertyRegistry registry) {
