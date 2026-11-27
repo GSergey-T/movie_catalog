@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class DirectorController {
     }
     
     @PostMapping
-    public ResponseEntity<DirectorResponseDTO> create(@RequestBody DirectorRequestDTO request) {
+    public ResponseEntity<DirectorResponseDTO> create(@Valid @RequestBody DirectorRequestDTO request) {
         DirectorResponseDTO result = directorService.createDirector(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -42,7 +43,7 @@ public class DirectorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DirectorResponseDTO> update(@PathVariable Long id, @RequestBody DirectorRequestDTO request) {
+    public ResponseEntity<DirectorResponseDTO> update(@PathVariable Long id, @Valid @RequestBody DirectorRequestDTO request) {
         DirectorResponseDTO result = directorService.updateDirector(id, request);
         return ResponseEntity.ok(result);
     }

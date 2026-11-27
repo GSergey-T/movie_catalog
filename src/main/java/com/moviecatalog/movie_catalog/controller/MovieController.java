@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponseDTO> create(@RequestBody MovieRequestDTO request) {
+    public ResponseEntity<MovieResponseDTO> create(@Valid @RequestBody MovieRequestDTO request) {
         MovieResponseDTO result = movieService.createMovie(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -41,7 +42,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponseDTO> update(@PathVariable Long id, @RequestBody MovieRequestDTO request) {
+    public ResponseEntity<MovieResponseDTO> update(@PathVariable Long id, @Valid @RequestBody MovieRequestDTO request) {
         MovieResponseDTO result = movieService.updateMovie(id, request);
         return ResponseEntity.ok(result);
     }
