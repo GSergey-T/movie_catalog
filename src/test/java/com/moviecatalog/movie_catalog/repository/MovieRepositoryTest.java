@@ -1,4 +1,4 @@
-package com.moviecatalog.movie_catalog.repository.integration;
+package com.moviecatalog.movie_catalog.repository;
 
 import com.moviecatalog.movie_catalog.integration.support.AbstractPostgresIntegrationTest;
 import com.moviecatalog.movie_catalog.dto.MovieActorDTO;
@@ -9,7 +9,6 @@ import com.moviecatalog.movie_catalog.entity.Director;
 import com.moviecatalog.movie_catalog.entity.Movie;
 import com.moviecatalog.movie_catalog.entity.MovieActor;
 import com.moviecatalog.movie_catalog.enums.MovieStatus;
-import com.moviecatalog.movie_catalog.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
